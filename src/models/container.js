@@ -129,7 +129,7 @@ export default class Container {
             this.labels = this.labels.filter(label => label.id !== id)
             this.labels.sort(label.sort)
             this.memories.forEach(memory => {
-                memory.labels = memory.labels.filter(name => name != label.name)
+                memory.labels = memory.labels.filter(name => name !== label.name)
             })
         }
     }

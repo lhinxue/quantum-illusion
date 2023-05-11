@@ -1,28 +1,27 @@
 import {useEffect, useState} from 'react';
 
-export default function Fading({on, delay = 1000, children}) {
+export default function Fading({on, delay = 500, children}) {
 
-    const [opacity, _opacity] = useState(on ? "initial" : "none")
-    const [display, _display] = useState(on ? 1 : 0)
+    const [opacity, _opacity] = useState(on)
+    const [visibility, _visibility] = useState(on)
 
     useEffect(() => {
         if (on) {
-            _display("initial")
-            setTimeout(() => _opacity(1), 100)
-
+            _visibility(true)
+            _opacity(true)
         } else {
-            _opacity(0)
-            setTimeout(() => _display('none'), delay)
+            _opacity(false)
+            setTimeout(() => _visibility(false), delay)
         }
-    }, [on])
+    }, [on, delay])
 
     return (
         <div
             className={"Fading"}
             style={{
-                opacity: opacity,
+                opacity: opacity ? 1 : 0,
                 transition: `opacity ${delay}ms ease-in-out`,
-                display: display
+                visibility: visibility ? "initial" : "hidden"
             }}
         >
             {children}
