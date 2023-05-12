@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
 
-export default function Page({children, style}) {
+export default function Page({children, style, ...props}) {
     return (
         <Box sx={{
             width: "100vw",
@@ -10,7 +10,7 @@ export default function Page({children, style}) {
             left: 0,
             overflow: "hidden",
             ...style
-        }}>
+        }} {...props}>
             {children}
         </Box>
     )

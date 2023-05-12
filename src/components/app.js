@@ -37,6 +37,19 @@ export default function App() {
         static unlockScreen() {
             _isScreenLocked(false)
         }
+
+        static updateContainer(value) {
+            _container(value)
+        }
+
+        static getPassword() {
+            return password
+        }
+
+        static updatePassword(value) {
+            _password(value)
+        }
+
     }
 
     return (
@@ -64,22 +77,18 @@ export default function App() {
             }
         })}>
             <FontLoader fonts={["DINosaur", "HarmonyOS"]} onLoadComplete={utl.fontLoadComplete}/>
-            <Fading on={!isDataReady}>
-                <DataDecryption/>
-            </Fading>
+
+            <DataDecryption on={!isDataReady} container={container} utl={utl}/>
             <Fading on={isDataReady}>
                 <UserInteraction/>
             </Fading>
             <Loading on={isLoading} opacity={.5}/>
             <Loading on={!isFontLoaded}/>
             <ScreenLocker on={isScreenLocked}/>
-            <div style={{background: 'white', position: 'fixed'}}>
+            <div style={{background: 'white', position: 'fixed', bottom:0}}>
                 <ButtonGroup>
                     <Button onClick={() => _isDataReady(n => !n)}>
                         isDataReady
-                    </Button>
-                    <Button onClick={() => _isScreenLocked(n => !n)}>
-                        isScreenLocked
                     </Button>
                     <Button onClick={() => _isLoading(n => !n)}>
                         isLoading
