@@ -85,7 +85,7 @@ export default function App() {
             <Loading on={isLoading} opacity={.5}/>
             <Loading on={!isFontLoaded}/>
             <ScreenLocker on={isScreenLocked}/>
-            <div style={{background: 'white', position: 'fixed', bottom:0}}>
+            <div style={{background: 'white', position: 'fixed', bottom:0,right:0}}>
                 <ButtonGroup>
                     <Button onClick={() => _isDataReady(n => !n)}>
                         isDataReady
