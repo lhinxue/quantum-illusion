@@ -19,7 +19,7 @@ export default function TextField({value, onChange, style, ...props}) {
                     <InputAdornment position={"end"}>{props.endIcon}</InputAdornment> : null
             }}
             sx={{
-                borderBottom: "1px solid " + theme.palette[props.color ?? "primary"].light,
+                borderBottom: props.disableUnderline || "1px solid " + theme.palette[props.color ?? "primary"].light,
                 "& input": {
                     padding: "1px 6px",
                     color: theme.palette[props.color ?? "primary"].main,

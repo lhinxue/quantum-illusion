@@ -1,14 +1,18 @@
 import Page from "../wrapper/page";
-import {Box, Button, Tab, Tabs, Typography, useTheme} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Collapse, Tabs, Typography, useTheme} from "@mui/material";
 import {useState} from "react";
 import IconButton from "../button/icon_button";
 import Icon from "../icon/icon";
 import Fading from "../animation/fading";
+import SelfButton from "../button/button"
+import TextField from "../input/text_field";
 
-export default function UserInteraction() {
+export default function UserInteraction({container}) {
 
     const [isSidebarExpanded, _isSidebarExpanded] = useState(true)
     const [appUrl, _appUrl] = useState(false)
+    const [isSearchModePartial,_isSearchModePartial]=useState(true)
+    const [isSearchPanelExpanded, _isSearchPanelExpanded] = useState(false)
 
     const getUrl = () => {
         if (appUrl && appUrl.startsWith("label-")) {
@@ -31,15 +35,19 @@ export default function UserInteraction() {
                 '& .Button': {
                     display: 'flex',
                     flexDirection: 'row',
-                    padding: '10px 0',
+                    padding: '10px 10px 10px 0',
                     justifyContent: 'flex-start',
                     border: '0',
                     borderRadius: '0',
                     alignItems: 'center',
+                    height: "50px",
+                    fontSize: "14px",
+                    boxSizing: "border-box",
                     minHeight: '50px',
                     minWidth: '50px',
                     maxHeight: '50px',
                     textTransform: 'none',
+                    transition: "background-color .3s ease-in-out",
                     '& svg': {
                         padding: "10px",
                         width: "30px"
@@ -48,11 +56,11 @@ export default function UserInteraction() {
                         textOverflow: "ellipsis",
                         overflow: "hidden",
                         whiteSpace: "nowrap",
-                        // padding: '0 10px',
                     }
                 },
                 '& .Button.Menu': {
                     borderBottom: "1px solid silver",
+
                 },
                 '& .Button.Tab': {
                     paddingLeft: "30px",
@@ -65,24 +73,35 @@ export default function UserInteraction() {
                     alignItems: "center",
                     padding: "0 10px",
                     gap: "10px",
+
+                    backgroundColor: theme.palette.primary.main,
+                    color: "white",
                     "& div": {
                         overflow: "hidden",
                         textOverflow: "ellipsis"
                     }
                 }}>
-                    <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
-                    <div>{"tanainaidetanainaidetanainaidetanainaidetanainaide"}</div>
+                    <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}
+                                style={{color: "white"}} color={"#ffffff"}
+                    />
+                    <div>{container.name}</div>
                 </Typography>
-                <Button className={"Button Menu"} fullWidth color={appUrl === "menu-0" ? "secondary" : "primary"}
-                        onClick={() => _appUrl("menu-0")}>
+                <SelfButton className={`Button Menu`} fullWidth
+                            onClick={() => _appUrl("menu-0")}
+                            disableRipple={true}
+                            active={appUrl === "menu-0"}
+                >
                     <Icon.upload fontSize={"small"}/>
                     <div>All Memories</div>
-                </Button>
-                <Button className={"Button Menu"} fullWidth color={appUrl === "menu-1" ? "secondary" : "primary"}
-                        onClick={() => _appUrl("menu-1")}>
+                </SelfButton>
+                <SelfButton className={`Button Menu`} fullWidth
+                            onClick={() => _appUrl("menu-1")}
+                            disableRipple
+                            active={appUrl === "menu-1"}
+                >
                     <Icon.upload fontSize={"small"}/>
-                    <div>Not ClassifiedClassifiedClassifiedClassifiedClassified</div>
-                </Button>
+                    <div>Not Classified</div>
+                </SelfButton>
                 <Fading on={isSidebarExpanded}>
                     <Tabs
                         onChange={(event, value) => _appUrl("label-" + value)}
@@ -90,42 +109,26 @@ export default function UserInteraction() {
                         scrollButtons={false}
                         value={getUrl()}
                         variant={"scrollable"}
+
+
                         sx={{
                             height: "calc(100% - 204px)",
                             "& .MuiTabs-indicator": {
                                 width: "100%",
-                                opacity: ".2"
+                                opacity: "0"
                             }
                         }}
                     >
                         {
-                            [
-                                "Jazzercise",
-                                "Flamenco",
-                                "Futurism",
-                                "Astrophysics",
-                                "Neuroscience",
-                                "Hippopotamus",
-                                "Kaleidoscope",
-                                "Kangaroo",
-                                "Euphoria",
-                                "Mediterranean",
-                                "Tsunami",
-                                "Tambourine",
-                                "Chrysanthemum",
-                                "Succulent",
-                                "Alchemy",
-                                "Saxophone",
-                                "Giraffe",
-                                "Rainforest",
-                                "Saffron",
-                                "Champagne"
-                            ].map(v =>
-                                <Tab
-                                    className={"Button Tab"}
-                                    value={v}
-                                    label={v}
-                                />)
+                            container.labels.map(v =>
+                                <SelfButton
+                                    className={`Button Tab`}
+                                    active={getUrl() === v.id}
+                                    onClick={() => _appUrl("label-" + v.id)}
+                                    disableRipple
+                                >
+                                    {v.name}
+                                </SelfButton>)
                         }
                     </Tabs>
                 </Fading>
@@ -164,9 +167,68 @@ export default function UserInteraction() {
                 </Fading>
             </Box>
             <Box sx={{
-                flex: 1
+                flex: 1,
+                display:"flex",
+                flexDirection:"column"
+
             }}>
-                {appUrl}
+                <Box
+                    onMouseEnter={() => _isSearchPanelExpanded(true)}
+                    onMouseLeave={() => _isSearchPanelExpanded(false)}
+                    sx={{
+                        borderBottom:"1px solid silver"
+                    }}
+                >
+                    <Typography sx={{
+                        padding:"15px",
+
+                    }}>
+                        <TextField
+                            disableUnderline
+                            endIcon={<IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>}/>
+                    </Typography>
+                    <Collapse orientation="vertical" in={isSearchPanelExpanded} timeout={300}
+                              easing={"ease-in-out"}
+
+                    >
+                        <Typography
+                        style={{
+                            borderTop:"1px solid silver",
+                            padding:"10px 15px",
+                            display:"flex",
+                            fontSize:"14px",
+                            gap:"10px",
+                        }}
+                        >
+                            <IconButton Icon={Icon.upload} onClick={()=>_isSearchModePartial(n=>!n)}/>
+                            <div style={{paddingLeft:'5px',
+                            width:"90px",
+                                cursor:"pointer"
+                            }}
+
+                            >Includes {`${isSearchModePartial?"one":"all"}`}</div>
+                            {
+                                container.labels.map((label) =>
+                                    <Typography
+
+                                        sx={{
+                                            fontSize: "13px",
+                                            border: "1px solid",
+                                            padding: "1px 5px",
+                                            borderRadius: "1em",
+                                            width: "fit-content"
+                                        }}
+                                    >
+                                        {label.name}
+                                    </Typography>
+                                )
+                            }
+                        </Typography>
+
+                    </Collapse>
+                </Box>
+
+                <div style={{flex: 1, background: "azure"}}></div>
             </Box>
         </Page>
 

@@ -14,7 +14,97 @@ export default function App() {
     const [isDataReady, _isDataReady] = useState(false)
     const [isScreenLocked, _isScreenLocked] = useState(false)
     const [isLoading, _isLoading] = useState(false)
-    const [container, _container] = useState(new Container())
+    const [container, _container] = useState(new Container({
+        name: "My Memories",
+        memories: [
+            {
+                id: "1",
+                title: "First Memory",
+                content: "This is my first memory",
+                labels: ["personal", "happy"]
+            },
+            {
+                id: "2",
+                title: "Second Memory",
+                content: "This is my second memory",
+                labels: ["work", "sad"]
+            },
+            {
+                id: "3",
+                title: "Third Memory",
+                content: "This is my third memory",
+                labels: ["personal", "happy"]
+            },
+            {
+                id: "4",
+                title: "Fourth Memory",
+                content: "This is my fourth memory",
+                labels: ["travel", "happy"]
+            },
+            {
+                id: "5",
+                title: "Fifth Memory",
+                content: "This is my fifth memory",
+                labels: ["work", "sad"]
+            },
+            {
+                id: "6",
+                title: "Sixth Memory",
+                content: "This is my sixth memory",
+                labels: ["travel", "happy"]
+            },
+            {
+                id: "7",
+                title: "Seventh Memory",
+                content: "This is my seventh memory",
+                labels: ["personal", "happy"]
+            },
+            {
+                id: "8",
+                title: "Eighth Memory",
+                content: "This is my eighth memory",
+                labels: ["work", "sad"]
+            },
+            {
+                id: "9",
+                title: "Ninth Memory",
+                content: "This is my ninth memory",
+                labels: ["travel", "happy"]
+            },
+            {
+                id: "10",
+                title: "Tenth Memory",
+                content: "This is my tenth memory",
+                labels: ["personal", "sad"]
+            }
+        ],
+        labels: [
+            {
+                id: "1",
+                name: "personal",
+                hidden: false,
+                important: false
+            },
+            {
+                id: "2",
+                name: "work",
+                hidden: false,
+                important: true
+            },
+            {
+                id: "3",
+                name: "travel",
+                hidden: false,
+                important: true
+            },
+            {
+                id: "4",
+                name: "sad",
+                hidden: false,
+                important: false
+            }
+        ]
+    }))
     const [password, _password] = useState("")
 
     class utl {
@@ -80,7 +170,7 @@ export default function App() {
 
             <DataDecryption on={!isDataReady} container={container} utl={utl}/>
             <Fading on={isDataReady}>
-                <UserInteraction/>
+                <UserInteraction container={container} />
             </Fading>
             <Loading on={isLoading} opacity={.5}/>
             <Loading on={!isFontLoaded}/>
