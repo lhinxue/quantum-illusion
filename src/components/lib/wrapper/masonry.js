@@ -1,14 +1,15 @@
 import Scrollbars from "react-custom-scrollbars"
 import {default as ReactMasonry} from "react-masonry-css"
-import {Box} from "@mui/material";
+import {Box, Tabs} from "@mui/material";
 import {createRef, useEffect, useRef, useState} from "react";
 
 export default function Masonry({children}) {
 
 
     return (
-        <Box component={"span"} sx={{
+        <Box sx={{
             width: "100%",
+            height:"100%",
             '& .Masonry': {
                 display: "flex",
                 width: "auto",
@@ -23,14 +24,28 @@ export default function Masonry({children}) {
                 }
             }
         }}>
-            <Scrollbars>
+            <Tabs
+                orientation={"vertical"}
+                scrollButtons={false}
+                value={false}
+                variant={"scrollable"}
+
+
+                sx={{
+                    height: "100%",
+                    "& .MuiTabs-indicator": {
+                        width: "100%",
+                        opacity: "0"
+                    }
+                }}
+            >
                 <ReactMasonry className={"Masonry"} columnClassName={"MasonryColumn"}
                               breakpointCols={{default: 4, 1400: 3, 1050: 2, 750: 1}}
                 >
-{children}
+                    {children}
                 </ReactMasonry>
-
-            </Scrollbars>
+                <div style={{height:"200px"}}> nothing </div>
+            </Tabs>
         </Box>
     )
 }

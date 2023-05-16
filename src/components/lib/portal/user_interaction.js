@@ -18,6 +18,17 @@ export default function UserInteraction({container}) {
     const [isSearchPanelExpanded, _isSearchPanelExpanded] = useState(false)
     const [searchKeyWord, _searchKeyWord] = useState("")
     const [searchLabels,_searchLabels]=useState([])
+
+    const [activeMemory,_activeMemory]=useState(null)
+
+    const openMemory = (memory)=>{
+        _activeMemory(memory)
+    }
+    const closeMemory = ()=>{
+        _activeMemory(null)
+    }
+
+
     const addLabelToSearch = (id) => {
         _searchLabels(labels => {
             if (labels.includes(id)) {
@@ -284,16 +295,49 @@ display:"flex",alignItems:"center"
                     </Collapse>
                 </Box>
 
-                <div style={{flex: 1, width: "100%",}}>
+                <div style={{flex: 1, width: "100%", height:"-webkit-fill-available"}}>
+
                     <Masonry reRender={isSidebarExpanded}>
                         {
                             getFilteredMemories().map((memory) =>
-                                <Note memory={memory} labels={container.labels} searchKeyWord={searchKeyWord}/>
+                                <Note memory={memory} labels={container.labels} searchKeyWord={searchKeyWord}
+                                onClick={()=>openMemory(memory)}
+                                />
                             )
                         }
                     </Masonry>
                 </div>
+
             </Box>
+            <Fading on={Boolean(activeMemory)}>
+                <Page style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    backgroundColor:"#00000033"
+                }}>
+                    <Typography sx={{
+                        width:"1100px",
+                        maxWidth:"90%",
+                        height:"800px",
+                        maxHeight:"90%",
+                        backgroundColor:"white",
+                        border:"1px solid silver",
+                        borderRadius:"1em"
+                    }}>
+                        <div>
+                            <IconButton Icon={Icon.fold} onClick={closeMemory}/>
+                            <TextField/>
+                        </div>
+                        <div>
+
+                        </div>
+
+                    </Typography>
+                </Page>
+            </Fading>
+
         </Page>
 
     )

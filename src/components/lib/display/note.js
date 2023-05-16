@@ -1,7 +1,7 @@
 import Button from "../button/button";
 import Chip from "./chip";
 
-export default function Note({memory, labels, searchKeyWord}) {
+export default function Note({memory, labels, searchKeyWord,...props}) {
     return (
         <Button style={{
             border: "1px solid silver",
@@ -23,7 +23,7 @@ export default function Note({memory, labels, searchKeyWord}) {
                 flexDirection: "row",
                 flexWrap: "wrap"
             }
-        }}>
+        }} {...props}>
             <div className={"Title"} dangerouslySetInnerHTML={{__html: memory.highlightTitleMatch(searchKeyWord)}}/>
             <div className={"Content"} dangerouslySetInnerHTML={{__html: memory.highlightContentMatch(searchKeyWord)}}/>
             <div className={"Labels"}>
