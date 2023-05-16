@@ -19,63 +19,63 @@ export default function App() {
         memories: [
             {
                 id: "1",
-                title: "First Memory",
-                content: "This is my first memory",
-                labels: ["personal", "happy"]
+                title: "First memory</div>",
+                content: "<div>This is my first memory</div>",
+                labels: ["1", "3"]
             },
             {
                 id: "2",
-                title: "Second Memory",
-                content: "This is my second memory",
-                labels: ["work", "sad"]
+                title: "Second memory</div>",
+                content: "<div>This is my second memory</div>",
+                labels: ["2", "4"]
             },
             {
                 id: "3",
-                title: "Third Memory",
-                content: "This is my third memory",
-                labels: ["personal", "happy"]
+                title: "Third memory</div>",
+                content: "<div>This is my third memory</div>",
+                labels: []
             },
             {
                 id: "4",
-                title: "Fourth Memory",
-                content: "This is my fourth memory",
-                labels: ["travel", "happy"]
+                title: "Fourth memory</div>",
+                content: "<div>This is my fourth memory</div>",
+                labels: []
             },
             {
                 id: "5",
-                title: "Fifth Memory",
-                content: "This is my fifth memory",
-                labels: ["work", "sad"]
+                title: "Fifth memory</div>",
+                content: "<div>This is my fifth memory</div>",
+                labels: ["3", "4"]
             },
             {
                 id: "6",
-                title: "Sixth Memory",
-                content: "This is my sixth memory",
-                labels: ["travel", "happy"]
+                title: "Sixth memory</div>",
+                content: "<div>This is my sixth memory</div>",
+                labels: ["1", "3"]
             },
             {
                 id: "7",
-                title: "Seventh Memory",
-                content: "This is my seventh memory",
-                labels: ["personal", "happy"]
+                title: "Seventh memory</div>",
+                content: "<div>This is my seventh memory</div>",
+                labels: ["1", "2"]
             },
             {
                 id: "8",
-                title: "Eighth Memory",
-                content: "This is my eighth memory",
-                labels: ["work", "sad"]
+                title: "Eighth memory</div>",
+                content: "<div>This is my eighth memory</div>",
+                labels: ["1", "4"]
             },
             {
                 id: "9",
-                title: "Ninth Memory",
-                content: "This is my ninth memory",
-                labels: ["travel", "happy"]
+                title: "Ninth memory</div>",
+                content: "<div>This is my ninth memory</div>",
+                labels: ["2", "3"]
             },
             {
                 id: "10",
-                title: "Tenth Memory",
-                content: "This is my tenth memory",
-                labels: ["personal", "sad"]
+                title: "Tenth memory</div>",
+                content: "<div>This is my tenth memory</div>",
+                labels: ["1", "3"]
             }
         ],
         labels: [

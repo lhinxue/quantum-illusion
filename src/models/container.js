@@ -77,10 +77,12 @@ export default class Container {
     }
 
     findMemories(keyword = "", labels = [], matchAll = false) {
+        console.log(labels)
         if (labels === null) {
             return this.memories.filter(memory => memory.labels.length === 0)
         }
         const memories = this.memories.filter(memory => {
+            console.log(memory.labels)
             if (matchAll) {
                 if (labels.length === 0 || labels.every(label => memory.labels.includes(label))) {
                     if (keyword === null) {

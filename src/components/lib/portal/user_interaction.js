@@ -1,24 +1,65 @@
 import Page from "../wrapper/page";
-import {Accordion, AccordionDetails, AccordionSummary, Box, Collapse, Tabs, Typography, useTheme} from "@mui/material";
+import {Box, Collapse, Tabs, Typography, useTheme} from "@mui/material";
 import {useState} from "react";
 import IconButton from "../button/icon_button";
 import Icon from "../icon/icon";
 import Fading from "../animation/fading";
 import SelfButton from "../button/button"
 import TextField from "../input/text_field";
+import Masonry from "../wrapper/masonry";
+import Note from "../display/note";
+import Chip from "../display/chip";
 
 export default function UserInteraction({container}) {
 
     const [isSidebarExpanded, _isSidebarExpanded] = useState(true)
     const [appUrl, _appUrl] = useState(false)
-    const [isSearchModePartial,_isSearchModePartial]=useState(true)
+    const [isSearchModePartial, _isSearchModePartial] = useState(true)
     const [isSearchPanelExpanded, _isSearchPanelExpanded] = useState(false)
+    const [searchKeyWord, _searchKeyWord] = useState("")
+    const [searchLabels,_searchLabels]=useState([])
+    const addLabelToSearch = (id) => {
+        _searchLabels(labels => {
+            if (labels.includes(id)) {
+                return labels.filter(label => label !== id);
+            } else {
+                return labels.concat(id);
+            }
+        })
 
+    }
     const getUrl = () => {
         if (appUrl && appUrl.startsWith("label-")) {
             return appUrl.replace("label-", "")
         } else {
             return false
+        }
+    }
+    const setUrl = (value) => {
+        _appUrl(value)
+        clearSearch()
+    }
+
+    const setSearchKeyWord = (value) => {
+        _searchKeyWord(value)
+        _appUrl("")
+    }
+
+    const clearSearch = () => {
+        _searchKeyWord("")
+    }
+
+    const getFilteredMemories = () => {
+        if (searchKeyWord) {
+            return container.findMemories(searchKeyWord, [])
+        } else if (appUrl === "menu-0") {
+            return container.memories
+        } else if (appUrl === "menu-1") {
+            return container.findMemories("", null)
+        } else if (getUrl()) {
+            return container.findMemories(null, [getUrl()])
+        } else {
+            return []
         }
     }
 
@@ -47,7 +88,6 @@ export default function UserInteraction({container}) {
                     minWidth: '50px',
                     maxHeight: '50px',
                     textTransform: 'none',
-                    transition: "background-color .3s ease-in-out",
                     '& svg': {
                         padding: "10px",
                         width: "30px"
@@ -78,36 +118,37 @@ export default function UserInteraction({container}) {
                     color: "white",
                     "& div": {
                         overflow: "hidden",
-                        textOverflow: "ellipsis"
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
                     }
                 }}>
-                    <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}
+                    <IconButton Icon={isSidebarExpanded ? Icon.fold : Icon.unfold}
+                                onClick={() => _isSidebarExpanded(n => !n)}
                                 style={{color: "white"}} color={"#ffffff"}
                     />
                     <div>{container.name}</div>
                 </Typography>
                 <SelfButton className={`Button Menu`} fullWidth
-                            onClick={() => _appUrl("menu-0")}
+                            onClick={() => setUrl("menu-0")}
                             disableRipple={true}
                             active={appUrl === "menu-0"}
                 >
-                    <Icon.upload fontSize={"small"}/>
+                    <Icon.notes fontSize={"small"}/>
                     <div>All Memories</div>
                 </SelfButton>
                 <SelfButton className={`Button Menu`} fullWidth
-                            onClick={() => _appUrl("menu-1")}
+                            onClick={() => setUrl("menu-1")}
                             disableRipple
                             active={appUrl === "menu-1"}
                 >
-                    <Icon.upload fontSize={"small"}/>
+                    <Icon.labelless fontSize={"small"}/>
                     <div>Not Classified</div>
                 </SelfButton>
                 <Fading on={isSidebarExpanded}>
                     <Tabs
-                        onChange={(event, value) => _appUrl("label-" + value)}
                         orientation={"vertical"}
                         scrollButtons={false}
-                        value={getUrl()}
+                        value={false}
                         variant={"scrollable"}
 
 
@@ -124,7 +165,7 @@ export default function UserInteraction({container}) {
                                 <SelfButton
                                     className={`Button Tab`}
                                     active={getUrl() === v.id}
-                                    onClick={() => _appUrl("label-" + v.id)}
+                                    onClick={() => setUrl("label-" + v.id)}
                                     disableRipple
                                 >
                                     {v.name}
@@ -142,9 +183,8 @@ export default function UserInteraction({container}) {
                         gap: "8px",
                         overflow: "hidden"
                     }}>
-                        <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
-                        <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
-                        <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
+                        <IconButton Icon={Icon.setting} onClick={() => _isSidebarExpanded(n => !n)}/>
+                        <IconButton Icon={Icon.download} onClick={() => _isSidebarExpanded(n => !n)}/>
                     </Typography>
                 </Fading>
                 <Fading on={!isSidebarExpanded}>
@@ -156,71 +196,87 @@ export default function UserInteraction({container}) {
                         display: "flex",
                         alignItems: "center",
                         overflow: "hidden",
-                        "& button": {
-                            marginBottom: "8px"
+                        // gap:'12px',
+                        "& label": {
+                            marginBottom: "7px"
                         }
                     }}>
-                        <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
-                        <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
-                        <IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>
+                        <IconButton Icon={Icon.download} onClick={() => _isSidebarExpanded(n => !n)}/>
+                        <IconButton Icon={Icon.setting} onClick={() => _isSidebarExpanded(n => !n)}/>
                     </Typography>
                 </Fading>
             </Box>
             <Box sx={{
                 flex: 1,
-                display:"flex",
-                flexDirection:"column"
+                display: "flex",
+                flexDirection: "column"
 
             }}>
                 <Box
                     onMouseEnter={() => _isSearchPanelExpanded(true)}
                     onMouseLeave={() => _isSearchPanelExpanded(false)}
                     sx={{
-                        borderBottom:"1px solid silver"
+                        borderBottom: "1px solid silver"
                     }}
                 >
                     <Typography sx={{
-                        padding:"15px",
-
+                        padding: "15px",
+display:"flex",alignItems:"center"
                     }}>
                         <TextField
                             disableUnderline
-                            endIcon={<IconButton Icon={Icon.upload} onClick={() => _isSidebarExpanded(n => !n)}/>}/>
+                            value={searchKeyWord}
+                            onChange={setSearchKeyWord}
+
+                        />
+                        <IconButton Icon={Icon.search}/>
+                    </Typography>
+                    <Typography
+                        style={{
+                            borderTop: "1px solid silver",
+                            padding: "10px 15px",
+                            display: "flex",
+                            fontSize: "14px",
+                            gap: "10px",
+                            alignItems: "center",
+                            flexDirection: "row",
+                            flexWrap: "wrap",
+                            height:'29px'
+                        }}
+                    >
+                        <IconButton Icon={Icon.switch} onClick={() => _isSearchModePartial(n => !n)}/>
+                        <div style={{
+                            paddingLeft: '5px',
+                            width: "90px",
+                            cursor: "pointer"
+                        }}
+
+                        >Includes {`${isSearchModePartial ? "one" : "all"}`}</div>
+                        {
+                            container.labels.filter((label)=>searchLabels.includes(label.id)).map((label) =>
+                                <Chip data={label}/>
+                            )
+                        }
                     </Typography>
                     <Collapse orientation="vertical" in={isSearchPanelExpanded} timeout={300}
                               easing={"ease-in-out"}
 
                     >
                         <Typography
-                        style={{
-                            borderTop:"1px solid silver",
-                            padding:"10px 15px",
-                            display:"flex",
-                            fontSize:"14px",
-                            gap:"10px",
-                        }}
-                        >
-                            <IconButton Icon={Icon.upload} onClick={()=>_isSearchModePartial(n=>!n)}/>
-                            <div style={{paddingLeft:'5px',
-                            width:"90px",
-                                cursor:"pointer"
+                            style={{
+                                padding: "10px 15px",
+                                display: "flex",
+                                fontSize: "14px",
+                                gap: "10px",
+                                alignItems: "center",
+                                flexDirection: "row",
+                                flexWrap: "wrap"
                             }}
+                        >
 
-                            >Includes {`${isSearchModePartial?"one":"all"}`}</div>
                             {
                                 container.labels.map((label) =>
-                                    <Typography
-
-                                        sx={{
-                                            fontSize: "13px",
-                                            border: "1px solid",
-                                            padding: "1px 5px",
-                                            borderRadius: "1em",
-                                            width: "fit-content"
-                                        }}
-                                    >
-                                        {label.name}
-                                    </Typography>
+                                    <Chip data={label}  onClick={addLabelToSearch}/>
                                 )
                             }
                         </Typography>
@@ -228,7 +284,15 @@ export default function UserInteraction({container}) {
                     </Collapse>
                 </Box>
 
-                <div style={{flex: 1, background: "azure"}}></div>
+                <div style={{flex: 1, width: "100%",}}>
+                    <Masonry reRender={isSidebarExpanded}>
+                        {
+                            getFilteredMemories().map((memory) =>
+                                <Note memory={memory} labels={container.labels} searchKeyWord={searchKeyWord}/>
+                            )
+                        }
+                    </Masonry>
+                </div>
             </Box>
         </Page>
 

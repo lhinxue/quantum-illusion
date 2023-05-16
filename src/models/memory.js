@@ -43,6 +43,7 @@ export default class Memory {
     }
 
     highlightContentMatch(keyword) {
+        console.log(keyword)
         if (!keyword) {
             return this.content
         } else {
