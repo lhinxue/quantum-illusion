@@ -9,8 +9,10 @@ import TextField from "../input/text_field";
 import Masonry from "../wrapper/masonry";
 import Note from "../display/note";
 import Chip from "../display/chip";
+import MemoryModification from "./memory_modification";
+import Memory from "../../../models/memory";
 
-export default function UserInteraction({container}) {
+export default function UserInteraction({container,utl}) {
 
     const [isSidebarExpanded, _isSidebarExpanded] = useState(true)
     const [appUrl, _appUrl] = useState(false)
@@ -18,14 +20,16 @@ export default function UserInteraction({container}) {
     const [isSearchPanelExpanded, _isSearchPanelExpanded] = useState(false)
     const [searchKeyWord, _searchKeyWord] = useState("")
     const [searchLabels,_searchLabels]=useState([])
+    const [isMemoryEditorOn,_isMemoryEditorOn]=useState(false)
 
-    const [activeMemory,_activeMemory]=useState(null)
+    const [activeMemory,_activeMemory]=useState(new Memory())
 
     const openMemory = (memory)=>{
         _activeMemory(memory)
+        _isMemoryEditorOn(true)
     }
     const closeMemory = ()=>{
-        _activeMemory(null)
+        _isMemoryEditorOn(false)
     }
 
 
@@ -309,34 +313,13 @@ display:"flex",alignItems:"center"
                 </div>
 
             </Box>
-            <Fading on={Boolean(activeMemory)}>
-                <Page style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    backgroundColor:"#00000033"
-                }}>
-                    <Typography sx={{
-                        width:"1100px",
-                        maxWidth:"90%",
-                        height:"800px",
-                        maxHeight:"90%",
-                        backgroundColor:"white",
-                        border:"1px solid silver",
-                        borderRadius:"1em"
-                    }}>
-                        <div>
-                            <IconButton Icon={Icon.fold} onClick={closeMemory}/>
-                            <TextField/>
-                        </div>
-                        <div>
+            <MemoryModification
+                on={isMemoryEditorOn}
+            memory={activeMemory}
+            onClose={closeMemory}
+                utl={utl}
+            />
 
-                        </div>
-
-                    </Typography>
-                </Page>
-            </Fading>
 
         </Page>
 

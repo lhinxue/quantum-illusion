@@ -19,62 +19,62 @@ export default function App() {
         memories: [
             {
                 id: "1",
-                title: "First memory</div>",
-                content: "<div>This is my first memory</div>",
+                title: "First memory",
+                content: "This is my first memory",
                 labels: ["1", "3"]
             },
             {
                 id: "2",
-                title: "Second memory</div>",
-                content: "<div>This is my second memory</div>",
+                title: "Second memory",
+                content: "This is my second memory",
                 labels: ["2", "4"]
             },
             {
                 id: "3",
-                title: "Third memory</div>",
-                content: "<div>This is my third memory</div>",
+                title: "Third memory",
+                content: "This is my third memory",
                 labels: []
             },
             {
                 id: "4",
-                title: "Fourth memory</div>",
-                content: "<div>This is my fourth memory</div>",
+                title: "Fourth memory",
+                content: "This is my fourth memory",
                 labels: []
             },
             {
                 id: "5",
-                title: "Fifth memory</div>",
-                content: "<div>This is my fifth memory</div>",
+                title: "Fifth memory",
+                content: "This is my fifth memory",
                 labels: ["3", "4"]
             },
             {
                 id: "6",
-                title: "Sixth memory</div>",
-                content: "<div>This is my sixth memory</div>",
+                title: "Sixth memory",
+                content: "This is my sixth memory",
                 labels: ["1", "3"]
             },
             {
                 id: "7",
-                title: "Seventh memory</div>",
-                content: "<div>This is my seventh memory</div>",
+                title: "Seventh memory",
+                content: "This is my seventh memory",
                 labels: ["1", "2"]
             },
             {
                 id: "8",
-                title: "Eighth memory</div>",
-                content: "<div>This is my eighth memory</div>",
+                title: "Eighth memory",
+                content: "This is my eighth memory",
                 labels: ["1", "4"]
             },
             {
                 id: "9",
-                title: "Ninth memory</div>",
-                content: "<div>This is my ninth memory</div>",
+                title: "Ninth memory",
+                content: "This is my ninth memory",
                 labels: ["2", "3"]
             },
             {
                 id: "10",
-                title: "Tenth memory</div>",
-                content: "<div>This is my tenth memory</div>",
+                title: "Tenth memory",
+                content: "This is my tenth memory",
                 labels: ["1", "3"]
             }
         ],
@@ -140,6 +140,10 @@ export default function App() {
             _password(value)
         }
 
+        static updateMemory(id, title, content, labels) {
+            container.addOrUpdateMemory(id, title, content, labels)
+        }
+
     }
 
     return (
@@ -170,12 +174,12 @@ export default function App() {
 
             <DataDecryption on={!isDataReady} container={container} utl={utl}/>
             <Fading on={isDataReady}>
-                <UserInteraction container={container} />
+                <UserInteraction container={container} utl={utl}/>
             </Fading>
             <Loading on={isLoading} opacity={.5}/>
             <Loading on={!isFontLoaded}/>
             <ScreenLocker on={isScreenLocked}/>
-            <div style={{background: 'white', position: 'fixed', bottom:0,right:0}}>
+            <div style={{background: 'white', position: 'fixed', bottom: 0, right: 0}}>
                 <ButtonGroup>
                     <Button onClick={() => _isDataReady(n => !n)}>
                         isDataReady

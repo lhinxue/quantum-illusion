@@ -29,35 +29,15 @@ export default class Memory {
         if (!keyword) {
             return false
         } else {
-            const tempElement = document.createElement('div');
-            tempElement.innerHTML = this.content
-            const divElements = tempElement.getElementsByTagName('div');
-            for (const div of divElements) {
-                const innerHTML = div.innerHTML
-                if (innerHTML.match(new RegExp(`(${keyword})`, "gi"))) {
-                    return true
-                }
-            }
-            return false
+            return Boolean(this.content.match(new RegExp(`(${keyword})`, "gi")))
         }
     }
 
     highlightContentMatch(keyword) {
-        console.log(keyword)
         if (!keyword) {
             return this.content
         } else {
-            const tempElement = document.createElement('div');
-            tempElement.innerHTML = this.content
-            const divElements = tempElement.getElementsByTagName('div');
-            for (const div of divElements) {
-                const innerHTML = div.innerHTML
-                if (innerHTML.match(new RegExp(`(${keyword})`, "gi"))) {
-                    const highlightedInnerHTML = innerHTML.replace(new RegExp(`(${keyword})`, "gi"), '<span class="highlight">$1</span>')
-                    div.innerHTML = highlightedInnerHTML
-                }
-            }
-            return tempElement.innerHTML
+            return this.content.replace(new RegExp(`(${keyword})`, "gi"), '<span class="highlight">$1</span>')
         }
     }
 
