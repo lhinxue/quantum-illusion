@@ -11,24 +11,25 @@ import Note from "../display/note";
 import Chip from "../display/chip";
 import MemoryModification from "./memory_modification";
 import Memory from "../../../models/memory";
+import FadingRefresh from "../animation/fading_refresh";
 
-export default function UserInteraction({container,utl}) {
+export default function UserInteraction({container, utl}) {
 
     const [isSidebarExpanded, _isSidebarExpanded] = useState(true)
     const [appUrl, _appUrl] = useState(false)
     const [isSearchModePartial, _isSearchModePartial] = useState(true)
     const [isSearchPanelExpanded, _isSearchPanelExpanded] = useState(false)
     const [searchKeyWord, _searchKeyWord] = useState("")
-    const [searchLabels,_searchLabels]=useState([])
-    const [isMemoryEditorOn,_isMemoryEditorOn]=useState(false)
+    const [searchLabels, _searchLabels] = useState([])
+    const [isMemoryEditorOn, _isMemoryEditorOn] = useState(false)
 
-    const [activeMemory,_activeMemory]=useState(new Memory())
+    const [activeMemory, _activeMemory] = useState(new Memory())
 
-    const openMemory = (memory)=>{
+    const openMemory = (memory) => {
         _activeMemory(memory)
         _isMemoryEditorOn(true)
     }
-    const closeMemory = ()=>{
+    const closeMemory = () => {
         _isMemoryEditorOn(false)
     }
 
@@ -236,7 +237,7 @@ export default function UserInteraction({container,utl}) {
                 >
                     <Typography sx={{
                         padding: "15px",
-display:"flex",alignItems:"center"
+                        display: "flex", alignItems: "center"
                     }}>
                         <TextField
                             disableUnderline
@@ -256,7 +257,7 @@ display:"flex",alignItems:"center"
                             alignItems: "center",
                             flexDirection: "row",
                             flexWrap: "wrap",
-                            height:'29px'
+                            height: '29px'
                         }}
                     >
                         <IconButton Icon={Icon.switch} onClick={() => _isSearchModePartial(n => !n)}/>
@@ -268,7 +269,7 @@ display:"flex",alignItems:"center"
 
                         >Includes {`${isSearchModePartial ? "one" : "all"}`}</div>
                         {
-                            container.labels.filter((label)=>searchLabels.includes(label.id)).map((label) =>
+                            container.labels.filter((label) => searchLabels.includes(label.id)).map((label) =>
                                 <Chip data={label}/>
                             )
                         }
@@ -291,7 +292,7 @@ display:"flex",alignItems:"center"
 
                             {
                                 container.labels.map((label) =>
-                                    <Chip data={label}  onClick={addLabelToSearch}/>
+                                    <Chip data={label} onClick={addLabelToSearch}/>
                                 )
                             }
                         </Typography>
@@ -299,24 +300,27 @@ display:"flex",alignItems:"center"
                     </Collapse>
                 </Box>
 
-                <div style={{flex: 1, width: "100%", height:"-webkit-fill-available"}}>
+                <div style={{flex: 1, width: "100%", height: "-webkit-fill-available"}}>
+                    <FadingRefresh renderKey={appUrl}>
+                        <Masonry>
+                            {
+                                getFilteredMemories().map((memory) =>
+                                    <Note memory={memory} labels={container.labels} searchKeyWord={searchKeyWord}
+                                          onClick={() => openMemory(memory)}
+                                    />
+                                )
+                            }
+                        </Masonry>
+                    </FadingRefresh>
 
-                    <Masonry reRender={isSidebarExpanded}>
-                        {
-                            getFilteredMemories().map((memory) =>
-                                <Note memory={memory} labels={container.labels} searchKeyWord={searchKeyWord}
-                                onClick={()=>openMemory(memory)}
-                                />
-                            )
-                        }
-                    </Masonry>
                 </div>
 
             </Box>
             <MemoryModification
+                key={activeMemory.id}
                 on={isMemoryEditorOn}
-            memory={activeMemory}
-            onClose={closeMemory}
+                memory={activeMemory}
+                onClose={closeMemory}
                 utl={utl}
             />
 
