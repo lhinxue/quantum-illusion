@@ -5,7 +5,6 @@ import {createRef, useEffect, useRef, useState} from "react";
 
 export default function Masonry({children}) {
 
-
     return (
         <Box sx={{
             width: "100%",
@@ -44,8 +43,7 @@ export default function Masonry({children}) {
                 >
                     {children}
                 </ReactMasonry>
-                <div style={{height:"200px"}}> nothing </div>
-            </Tabs>
+                </Tabs>
         </Box>
     )
 }
